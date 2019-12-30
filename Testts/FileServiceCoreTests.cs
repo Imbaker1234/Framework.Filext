@@ -12,7 +12,7 @@ namespace Tests
     {
         public void ReadTest()
         {
-            var mockFile = new Mock<>();
+
         }
     }
 }

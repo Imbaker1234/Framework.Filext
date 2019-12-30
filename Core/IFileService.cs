@@ -94,8 +94,11 @@ namespace Filext.Core
         /// <param name="exceptionOnFailure"></param>
         void Delete(string filepath, bool exceptionOnFailure);
 
-
-        void Create(string filePath);
+        /// <summary>
+        /// Creates a file at the specified path.
+        /// </summary>
+        /// <param name="filePath"></param>
+        void CreateFile(string filePath);
 
         /// <summary>
         /// <para>
@@ -204,10 +207,12 @@ namespace Filext.Core
         /// EXAMPLE:
         /// </para>
         /// <para>
-        /// The system administrator wants to remove a users ability to delete a file.
+        /// The system administrator wants to remove a users ability to write to or
+        /// delete a file.
         /// </para>
         /// <para>
-        /// //TODO This
+        /// RemoveFileSecurity(@"C:\Temp\MyFile.txt", "Frank.Pippin", AccessControlType.Allow,
+        /// FileSystemRights.Write | FileSystemRights.Delete);
         /// </para>
         /// </summary>
         /// <param name="fileName"></param>
@@ -217,19 +222,64 @@ namespace Filext.Core
         void RemoveFileSecurity(string fileName, string account,
             AccessControlType controlType, FileSystemRights rights);
 
+
         /// <summary>
-        /// Adds ACL attributes to a directory.
+        /// <para>
+        /// Adds ACL attributes to a directory. By default these attributes
+        /// are inherited by the files and subdirectories.
+        /// </para>
+        /// <para>
+        /// EXAMPLE:
+        /// </para>
+        /// <para>
+        /// The following call would grant George.Rhinemann the ability to read files and
+        /// call EXEs from the Archives folder.
+        /// </para>
+        /// <para>
+        /// AddDirectorySecurity(@"C:\Users\Admin\Archives", "George.Rhinemann",
+        /// AccessControlType.Allow, FileSystemRights.Read | FileSystemRights.ExecuteFile,
+        /// InheritanceFlags.ContainerInherit, PropagationFlags.None);
+        /// </para>
         /// </summary>
-        /// <param name="FileName"></param>
-        /// <param name="Account"></param>
+        /// <param name="fileName"></param>
+        /// <param name="account"></param>
+        /// <param name="ControlType"></param>
         /// <param name="rights"></param>
-        /// <param name="controlType"></param>
         /// <param name="inheritance"></param>
         /// <param name="propagation"></param>
-        void AddDirectorySecurity(string FileName, string Account, InheritanceFlags inheritance,
-            PropagationFlags propagation, AccessControlType controlType, FileSystemRights rights);
+        void AddDirectorySecurity(string fileName, string account,
+            AccessControlType ControlType, FileSystemRights rights,
+            InheritanceFlags inheritance = InheritanceFlags.ContainerInherit,
+            PropagationFlags propagation = PropagationFlags.None);
 
-        void RemoveDirectorySecurity(string FileName, string Account, InheritanceFlags inheritance,
-            PropagationFlags propagation, AccessControlType controlType, FileSystemRights rights);
+        /// <summary>
+        /// <para>
+        /// Remove ACL attributes from a directory. By default these attributes
+        /// are inherited by the files and subdirectories.
+        /// </para>
+        /// <para>
+        /// EXAMPLE:
+        /// </para>
+        /// <para>
+        /// The following call would remove George.Rhinemann's ability to Delete
+        /// or Write to the Archives directory and all of its files and subfolders.
+        /// </para>
+        /// <para>
+        /// RemoveDirectorySecurity(@"C:\Users\Admin\Archives",
+        /// "George.Rhinemann", AccessControlType.Allow, FileSystemRights.Delete
+        /// | FileSystemRights.Write, InheritanceFlags.ContainerInherit,
+        /// PropagationFlags.None);
+        /// </para>
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="account"></param>
+        /// <param name="controlType"></param>
+        /// <param name="rights"></param>
+        /// <param name="inheritance"></param>
+        /// <param name="propagation"></param>
+        void RemoveDirectorySecurity(string fileName, string account,
+            AccessControlType controlType, FileSystemRights rights,
+            InheritanceFlags inheritance = InheritanceFlags.ContainerInherit,
+            PropagationFlags propagation = PropagationFlags.None);
     }
 }

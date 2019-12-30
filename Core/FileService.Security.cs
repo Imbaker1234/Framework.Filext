@@ -46,39 +46,42 @@ namespace Filext.Core
             File.SetAccessControl(fileName, fSecurity);
         }
 
-        public virtual void AddDirectorySecurity(string FileName, string Account, FileSystemRights Rights,
-            AccessControlType ControlType, InheritanceFlags inheritance, PropagationFlags propagation)
+        public virtual void AddDirectorySecurity(string fileName, string account,
+            AccessControlType ControlType, FileSystemRights rights,
+            InheritanceFlags inheritance = InheritanceFlags.ContainerInherit, 
+            PropagationFlags propagation = PropagationFlags.None)
         {
-            // Create a new DirectoryInfo object.
-            DirectoryInfo dInfo = new DirectoryInfo(FileName);
+            // CreateFile a new DirectoryInfo object.
+            DirectoryInfo dInfo = new DirectoryInfo(fileName);
 
             // Get a DirectorySecurity object that represents the 
             // current security settings.
             DirectorySecurity dSecurity = dInfo.GetAccessControl();
 
             // Add the FileSystemAccessRule to the security settings. 
-            dSecurity.AddAccessRule(new FileSystemAccessRule(Account,
-                Rights,
+            dSecurity.AddAccessRule(new FileSystemAccessRule(account,
+                rights,
                 ControlType));
 
             // Set the new access settings.
             dInfo.SetAccessControl(dSecurity);
         }
 
-        public virtual void RemoveDirectorySecurity(string FileName, string Account, FileSystemRights Rights,
-            AccessControlType ControlType)
+        public virtual void RemoveDirectorySecurity(string fileName, string account,
+            AccessControlType ControlType, FileSystemRights rights,
+            InheritanceFlags inheritance = InheritanceFlags.ContainerInherit,
+            PropagationFlags propagation = PropagationFlags.None)
         {
-            // Create a new DirectoryInfo object.
-            DirectoryInfo dInfo = new DirectoryInfo(FileName);
+            // CreateFile a new DirectoryInfo object.
+            DirectoryInfo dInfo = new DirectoryInfo(fileName);
 
             // Get a DirectorySecurity object that represents the 
             // current security settings.
             DirectorySecurity dSecurity = dInfo.GetAccessControl();
 
             // Add the FileSystemAccessRule to the security settings. 
-            dSecurity.RemoveAccessRule(new FileSystemAccessRule(Account,
-                Rights,
-                ControlType));
+            dSecurity.RemoveAccessRule(
+                new FileSystemAccessRule(account, rights, ControlType));
 
             // Set the new access settings.
             dInfo.SetAccessControl(dSecurity);
